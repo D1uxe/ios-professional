@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: Top Headlines API
+  version: 1.0.0
+  description: API for fetching top headlines from a news source
+servers:
+  - url: https://newsapi.org/v2
+
+paths:
+  /top-headlines:
+    get:
+      tags:
+      - articles
+      summary: Get top headlines
+      operationId: fetchArticles
+      description: Retrieve top headlines for a specified country and category.
+      parameters:
+        - in: query
+          name: country
+          schema:
+            type: string
+          description: Country code (ISO 3166-1 alpha-2) to retrieve headlines for.
+          required: true
+        - in: query
+          name: category
+          schema:
+             $ref: '#/components/schemas/NewsCategory'
+          description: Category of the news. Allowed values are business, entertainment, general, health, science, sports, and technology.
+          required: true
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Use this to page through the results if the total results found is greater than the page size
+          required: true
+        - in: query
+          name: apiKey
+          schema:
+            type: string
+          description: Your API key.
+          required: true
+      responses:
+        '200':
+          description: A list of top headlines
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeadlineResponse'
+        default:
+          description: enexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+components:
+  schemas:
+    NewsCategory:
+      type: string
+      enum: [business, sports, technology]
+      description: Specific categories for news articles that can be queried.
+
+    HeadlineResponse:
+      required:
+      - totalResults
+      type: object
+      properties:
+        status:
+          type: string
+          description: Response status
+        totalResults:
+          type: integer
+          description: Total number of results available
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+
+    Article:
+      required:
+      - url
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/Source'
+        author:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        urlToImage:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+        content:
+          type: string
+
+    Source:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+
+    ErrorModel:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          maximum: 600
+          minimum: 100
+          type: integer
