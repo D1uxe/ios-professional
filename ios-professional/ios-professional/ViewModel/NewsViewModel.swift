@@ -7,6 +7,7 @@
 
 import Combine
 import NetworkAPI
+import Core
 
 
 enum PaginationState {
@@ -31,6 +32,8 @@ enum PaginationState {
 }
 
 class NewsViewModel: ObservableObject {
+
+    @Injected var newsService: NetworkService?
 
     @Published var articles: [Article] = []
     @Published var paginationState: PaginationState = .idle
@@ -57,13 +60,14 @@ class NewsViewModel: ObservableObject {
                 isLoading = false
             }
             do {
-                let response = try await ArticlesAPI.fetchArticles(
+                let response = try await newsService?.fetchArticles(
                     country: "ru",
                     category: category,
                     page: page,
                     apiKey: "8e7caac0fb8c4c2ba9f3324db7ed392d"
                 )
-                if let fetchedArticles = response.articles, !fetchedArticles.isEmpty {
+                if let response,
+                    let fetchedArticles = response.articles, !fetchedArticles.isEmpty {
                     articles.append(contentsOf: fetchedArticles)
                     totalCount = response.totalResults
                     page += 1

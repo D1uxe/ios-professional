@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import Core
+import NetworkAPI
 
 @main
 struct ios_professionalApp: App {
+    init() {
+        ServiceLocator.shared.addService(service: NetworkService())
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()
