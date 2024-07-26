@@ -1,4 +1,4 @@
-MODULE="Modules/NetworkAPI/Sources/NetworkAPI/"
+MODULE="Modules/Core/Sources/Core/NetworkAPI/"
 openapi-generator generate --input-spec "newsapi.yaml" --generator-name swift5 --additional-properties=responseAs=AsyncAwait --output "newsAPI"
 rm -r $MODULE""*
 cp -R "newsAPI/OpenAPIClient/Classes/OpenAPIs/". $MODULE

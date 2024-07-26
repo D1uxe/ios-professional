@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Core
-import NetworkAPI
 
 @main
 struct ios_professionalApp: App {

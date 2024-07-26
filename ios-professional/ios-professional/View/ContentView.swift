@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import NetworkAPI
+import Core
 
 struct ContentView: View {
 
