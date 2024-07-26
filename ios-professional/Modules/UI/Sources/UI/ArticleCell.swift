@@ -2,12 +2,12 @@
 //  ArticleCell.swift
 //  ios-professional
 //
-//  Created by Бугров Артем on 24.06.2024.
+//  Created by Артем on 24.06.2024.
 //
 
 import SwiftUI
 
-struct ArticleCell: View {
+public struct ArticleCell: View {
 
     @State private var toggleAnimation: Bool = false
 
@@ -15,7 +15,13 @@ struct ArticleCell: View {
     let description: String?
     var onAnimate: (CGPoint, CGSize) -> Void
 
-    var body: some View {
+    public init(title: String?, description: String?, onAnimate: @escaping (CGPoint, CGSize) -> Void) {
+        self.title = title
+        self.description = description
+        self.onAnimate = onAnimate
+    }
+
+    public var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20).foregroundStyle(.gray)
 
@@ -52,7 +58,7 @@ struct ArticleCell: View {
 }
 
 
-struct ArticleFlyawayView: View {
+public struct ArticleFlyawayView: View {
 
     let title: String?
     let description: String?
@@ -62,7 +68,16 @@ struct ArticleFlyawayView: View {
     @Binding var flyOffset: CGPoint
     @Binding var flyAway: Bool
 
-    var body: some View {
+    public init(title: String?, description: String?, size: CGSize, animate: Binding<Bool>, flyOffset: Binding<CGPoint>, flyAway: Binding<Bool>) {
+        self.title = title
+        self.description = description
+        self.size = size
+        self._animate = animate
+        self._flyOffset = flyOffset
+        self._flyAway = flyAway
+    }
+    
+    public var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20).foregroundStyle(.gray)
 
